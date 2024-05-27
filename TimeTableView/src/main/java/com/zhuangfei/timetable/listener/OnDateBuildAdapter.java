@@ -65,17 +65,9 @@ public class OnDateBuildAdapter implements ISchedule.OnDateBuildListener {
 
         //获取周几，1->7
         Calendar now = Calendar.getInstance();
-        //一周第一天是否为星期天
-        boolean isFirstSunday = (now.getFirstDayOfWeek() == Calendar.SUNDAY);
         int weekDay = now.get(Calendar.DAY_OF_WEEK);
-        //若一周第一天为星期天，则-1
-        if (isFirstSunday) {
-            weekDay = weekDay - 1;
-            if (weekDay == 0) {
-                weekDay = 7;
-            }
-        }
-
+        //令周一为 1
+        weekDay = (weekDay + 7 - Calendar.MONDAY) % 7 + 1;
         activeDateBackground(weekDay);
     }
 
