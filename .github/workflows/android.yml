@@ -2,11 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "master" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
@@ -16,28 +14,26 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v4
       
-    - name: Setup Java
-      uses: actions/setup-java@v4
+    - name: set up JDK 17
+      uses: actions/setup-java@v3
       with:
+        java-version: '17'
         distribution: 'temurin'
-        java-version: 17
-        
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+        cache: gradle
 
-    - name: Give Gradlew Execution Permissions
-      run: chmod +x ./gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
     
     - name: Build with Gradle
-      run: ./gradlew build --no-daemon
+      run: ./gradlew build
       
     - name: Build APK
-      run: ./gradlew assembleRelease --no-daemon
+      run: ./gradlew assembleRelease
       
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4.4.3
       with:
         # Artifact name
-        name: app-release.apk
+        name: CourseBlock-release
         # A file, directory or wildcard pattern that describes what to upload
-        path: app/build/outputs/apk/release/*.apk
+        path: app/build/outputs/apk/release/交课表_*.apk
